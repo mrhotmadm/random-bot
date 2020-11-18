@@ -4,8 +4,6 @@ module.exports = {
     name: "kick",
     description: "kicks a user",
     async execute(message, args) {
-        if (message.mentions.members.first() == message.guild.owner || message.mentions.members.first().id == message.guild.ownerID) return message.channel.send("**You cannot kick the owner of the server!**");
-        
         if (!message.guild.me.hasPermission("ADMINISTRATOR" || "BAN_MEMBERS" || "KICK_MEMBERS")) {
             return message.channel.send("I do not have permissions!");
         }
@@ -22,10 +20,10 @@ module.exports = {
             if (userToKick.id === message.author.id) return message.channel.send("**You cannot kick yourself!**");
 
             const finalMember = userToKick;
-            finalMember.send(reason).catch(err => {
+            finalMember.kick(reason).catch(err => {
                 console.log(err);
             }).then(() => {
-                finalMember.kick(reason).catch(err => {
+                finalMember.send(`You have been kicked from **${message.guild}** for the reason: **${reason}**.`).catch(err => {
                     console.log(err);
                 });
             });

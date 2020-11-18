@@ -4,7 +4,7 @@ module.exports = {
     name: "kick",
     description: "kicks a user",
     async execute(message, args) {
-        if (args[0] == message.guild.owner || args[0] == message.guild.ownerID) return message.channel.send("**You cannot kick the owner of the server!**");
+        if (message.mentions.members.first() == message.guild.owner || message.mentions.members.first().id == message.guild.ownerID) return message.channel.send("**You cannot kick the owner of the server!**");
         
         if (!message.guild.me.hasPermission("ADMINISTRATOR" || "BAN_MEMBERS" || "KICK_MEMBERS")) {
             return message.channel.send("I do not have permissions!");

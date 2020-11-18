@@ -10,13 +10,16 @@ module.exports = {
         sendError = async function(msg) {
             send(new Discord.MessageEmbed().setColor('RED').setDescription(msg).setTitle("Oops!"))
         }
+        sendMember = async function(msg, member) {
+            member.send(msg)
+        }
 
         if (!args[0]) return sendError('**You need to specify a member of this server to kick!**')
 
         if (!message.member.hasPermission("ADMINISTRATOR" || "KICK_MEMBERS")) {
             sendError(`${message.member}, **you do not have permissions!**`);
         }
-        
+
         if (!message.guild.me.hasPermission("ADMINISTRATOR" || "BAN_MEMBERS" || "KICK_MEMBERS")) {
             return message.channel.send("I do not have permissions!");
         }
@@ -35,19 +38,13 @@ module.exports = {
             finalMember.kick(reason).catch(err => {
                 console.log(err);
             }).then(() => {
-                finalMember.send(`You have been kicked from **${message.guild}** for the reason: **${reason}**.`).catch(err => {
+                sendMember(`You have been kicked from **${message.guild}** for the reason: **${reason}**.`, finalMember).catch(err => {
                     console.log(err);
                 });
             });
 
-            let currentTime = new Date();
-            var hours = currentTime.getHours() > 12 ? currentTime.getHours() - 12 : currentTime.getHours();
-            var am_pm = currentTime.getHours() >= 12 ? "PM" : "AM";
-
-            let splitted = currentTime.getMinutes()
-            if (splitted.length === 1) {
-                splitted = "0" + splitted
-            }
+            var d = new Date,
+            dformat = [d.getMonth() + 1, d.getDate(), d.getFullYear()].join('/') + ' ' + [d.getHours(), d.getMinutes(), d.getSeconds()].join(':');
 
             let kickEmbed = new Discord.MessageEmbed()
             .setAuthor(`${message.author.username} - (${message.author.id})`, message.author.displayAvatarURL())
@@ -57,7 +54,7 @@ module.exports = {
             **Member:** ${finalMember.user.username} - *(${finalMember.user.id})*
             **Action:** ***Kick***
             **Reason:** ${reason}
-            **Date & Time:** **${currentTime.getMonth()}-${currentTime.getDay()}-${currentTime.getFullYear()} (${currentTime.getHours()}:${splitted} ${am_pm})**
+            **Date & Time:** **${dformat}**
             **Moderator:** *@${message.author.username} (${message.author.id})*
             **Audit Logged: True**
             `)

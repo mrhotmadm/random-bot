@@ -4,26 +4,43 @@ module.exports = {
     name: "ban",
     description: "bans a user",
     async execute(message, args) {
-        if (args[0] == message.guild.owner || args[0] == message.guild.ownerID) return message.channel.send("**You cannot ban the owner of the server!**");
-        
+        send = async function(msg) {
+            message.channel.send(msg)
+        }
+        sendError = async function(msg) {
+            send(new Discord.MessageEmbed().setColor('RED').setDescription(msg).setTitle("Oops!"))
+        }
+        sendMember = async function(msg, member) {
+            member.send(msg)
+        }
+
+        if (!args[0]) return sendError('**You need to specify a member of this server to ban!**')
+
+        if (!message.member.hasPermission("ADMINISTRATOR" || "BAN_MEMBERS")) {
+            sendError(`${message.member}, **you do not have permissions!**`);
+        }
+
         if (!message.guild.me.hasPermission("ADMINISTRATOR" || "BAN_MEMBERS" || "KICK_MEMBERS")) {
             return message.channel.send("I do not have permissions!");
         }
         
-
-        if (message.member.hasPermission("ADMINISTRATOR" || "KICK_MEMBERS")) {
+        if (message.member.hasPermission("ADMINISTRATOR" || "BAN_MEMBERS")) {
             const userToBan = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
-            if (!userToBan) return message.channel.send("That user cannot be found!");
-            let treason = args.slice(1).join(" ");
-            if (!treason) treason = "No reason given.";
+            if (!userToBan) return sendError("**That user cannot be found!**");
+            let reason = args.slice(1).join(" ");
+            if (!reason) reason = "No reason given.";
 
-            if (userToBan.id === message.guild.me.id) return message.channel.send("**You must ban me manually!**");
+            if (userToBan.id === message.guild.me.id) return sendError("**You must ban me manually!**");
 
-            if (userToBan.id === message.author.id) return message.channel.send("**You cannot ban yourself!**");
+            if (userToBan.id === message.author.id) return sendError("**You cannot ban yourself!**");
 
             const finalMember = userToBan;
-            finalMember.ban({reason : treason}).catch(err => {
+            finalMember.ban({reason: `${reason}`}).catch(err => {
                 console.log(err);
+            }).then(() => {
+                sendMember(`You have been banned from **${message.guild}** for the reason: **${reason}**.`, finalMember).catch(err => {
+                    console.log(err);
+                });
             });
 
             var d = new Date,
@@ -35,18 +52,15 @@ module.exports = {
             .setColor("#91A3B0")
             .setDescription(`
             **Member:** ${finalMember.user.username} - *(${finalMember.user.id})*
-            **Action:** **Permanent Ban *(Unless unbanned)***
-            **Reason:** ${treason}
+            **Action:** ***Ban***
+            **Reason:** ${reason}
             **Date & Time:** **${dformat}**
             **Moderator:** *@${message.author.username} (${message.author.id})*
-            **Audit Logged:** True
+            **Audit Logged: True**
             `)
             .setTimestamp();
 
-            message.channel.send(banEmbed);
-        }
-        else {
-            message.reply(`**You do not have permissions!**`);
+            send(banEmbed);
         }
     }
 }

@@ -13,6 +13,10 @@ module.exports = {
 
         if (!args[0]) return sendError('**You need to specify a member of this server to kick!**')
 
+        if (!message.member.hasPermission("ADMINISTRATOR" || "KICK_MEMBERS")) {
+            sendError(`${message.member}, **you do not have permissions!**`);
+        }
+        
         if (!message.guild.me.hasPermission("ADMINISTRATOR" || "BAN_MEMBERS" || "KICK_MEMBERS")) {
             return message.channel.send("I do not have permissions!");
         }
@@ -60,9 +64,6 @@ module.exports = {
             .setTimestamp();
 
             message.channel.send(kickEmbed);
-        }
-        else {
-            sendError(`${message.member}, **you do not have permissions!**`);
         }
     }
 }

@@ -11,7 +11,7 @@ module.exports = {
             send(new Discord.MessageEmbed().setColor('RED').setDescription(msg).setTitle("Oops!"))
         }
 
-        if (!args[0]) return sendError('You need to specify a member of this server to kick!')
+        if (!args[0]) return sendError('**You need to specify a member of this server to kick!**')
 
         if (!message.guild.me.hasPermission("ADMINISTRATOR" || "BAN_MEMBERS" || "KICK_MEMBERS")) {
             return message.channel.send("I do not have permissions!");
@@ -19,7 +19,7 @@ module.exports = {
         
         if (message.member.hasPermission("ADMINISTRATOR" || "KICK_MEMBERS")) {
             const userToKick = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
-            if (!userToKick) return send("That user cannot be found!");
+            if (!userToKick) return sendError("**That user cannot be found!**");
             let reason = args.slice(1).join(" ");
             if (!reason) reason = "No reason given.";
 
@@ -62,7 +62,7 @@ module.exports = {
             message.channel.send(kickEmbed);
         }
         else {
-            message.channel.send(`@${message.member}, **you do not have permissions!**`);
+            sendError(`${message.member}, **you do not have permissions!**`);
         }
     }
 }

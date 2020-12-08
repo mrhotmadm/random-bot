@@ -32,7 +32,7 @@ for (const file of commandFiles) {
 }
 
 bot.once('ready', () => {
-    console.log(`CRR is online!`);
+    console.log(`Nexus is online!`);
     
     // -- MongoDB Connect --
     db.connect("mongodb+srv://hexerous:YcjpFek7xczLx0LB@cluster0.t0kst.mongodb.net/nexusdata", dbOptions)

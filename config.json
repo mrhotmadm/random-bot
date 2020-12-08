@@ -1,7 +1,7 @@
 {
-    "token": "Nzc4MzE3OTE0MDIwMjQ5NjUw.X7QPCw.MTTVpzeolCOfFNFVaxiNif2x1d4",
+    "token": "Nzg1OTM4OTM4NDgwODIwMzE1.X8_IrA.oEJ7c1Lsg97Bcv6dAklwGZ6lhdI",
     "db": "mongodb+srv://hexerous:YcjpFek7xczLx0LB@cluster0.2hzub.mongodb.net/test?retryWrites=true&w=majority",
-    "bot": "Nexus",
-    "prefix": ";",
+    "bot": "CRR",
+    "prefix": "crr-",
     "bot-version": "v1.0"
 }

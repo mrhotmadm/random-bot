@@ -1,6 +1,6 @@
 {
-    "token": "Nzc4MzE3OTE0MDIwMjQ5NjUw.X7QPCw.xf2f5OrYsjF3cQNx20acr8RsjlU",
-    "db": "mongodb+srv://hexerous:YcjpFek7xczLx0LB@cluster0.2hzub.mongodb.net/test?retryWrites=true&w=majority",
+    "token": null,
+    "db": null,
     "bot": "Nexus",
     "prefix": "::",
     "bot-version": "v1.0"

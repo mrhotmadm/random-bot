@@ -17,9 +17,9 @@ bot.commands = new Discord.Collection();
 
 // -- Config --
 const configuration = require("./config.json");
-const mongokey = configuration.db;
-const token = configuration.token;
-const prefix = configuration.prefix;
+const MONGO_URI = process.env.MONGO_URI;
+const TOKEN = process.env.TOKEN;
+const prefix = process.env.PREFIX;
 
 // -- Login --
 bot.login(configuration.token);
@@ -35,7 +35,7 @@ bot.once('ready', () => {
     console.log(`Nexus is online!`);
     
     // -- MongoDB Connect --
-    db.connect(process.env.MONGO_URI, dbOptions)
+    db.connect(MONGO_URI, dbOptions)
         .then(() => console.log('connected to mongodb'))
         .catch(err => console.log(err));
 })

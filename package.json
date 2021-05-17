@@ -7,7 +7,7 @@
     "start": "node index.js"
   },
   "author": "mrhotmadm",
-  "license": "ISC",
+  "license": "GNU",
   "dependencies": {
     "discord.js": "^12.4.1",
     "fs": "0.0.1-security",

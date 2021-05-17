@@ -47,10 +47,12 @@ bot.on('message', async (message) => {
     
     const dbres = await GuildSchema.findOne({guildId: message.guild.id})
     if (!dbres) {
-        new GuildSchema({
+        const newPrefix = new GuildSchema({
             guildId: message.guild.id,
             prefix: PREFIX
-        }).catch(err => console.log(err));
+        })
+            
+        await newPrefix.save().catch(err => console.log(err));
     }
     
     const prefix = dbres.prefix;

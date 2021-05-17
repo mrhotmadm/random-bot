@@ -35,7 +35,7 @@ bot.once('ready', () => {
     console.log(`Nexus is online!`);
     
     // -- MongoDB Connect --
-    db.connect("mongodb+srv://hexerous:YcjpFek7xczLx0LB@cluster0.t0kst.mongodb.net/nexusdata", dbOptions)
+    db.connect(process.env.MONGO_URI, dbOptions)
         .then(() => console.log('connected to mongodb'))
         .catch(err => console.log(err));
 })

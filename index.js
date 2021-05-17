@@ -17,12 +17,12 @@ bot.commands = new Discord.Collection();
 
 // -- Config --
 const configuration = require("./config.json");
-const MONGO_URI = process.env.MONGO_URI;
-const TOKEN = process.env.TOKEN;
-const prefix = process.env.PREFIX;
+const MONGO_URI = process.env.MONGO_URI || config.MONGO_URI;
+const TOKEN = process.env.TOKEN || config.TOKEN;
+const PREFIX = process.env.PREFIX || config.PREFIX;
 
 // -- Login --
-bot.login(configuration.token);
+bot.login(TOKEN);
 
 // -- CMD Handler -- 
 const commandFiles = fs.readdirSync('./commands')
@@ -46,17 +46,12 @@ bot.on('message', async (message) => {
     if (message.author.bot) return;
     
     const dbres = await GuildSchema.findOne({guildId: message.guild.id})
-    if (!dbres) await GuildSchema.findOneAndUpdate({
-        guildId: message.guild.id,
-    },
-    {
-        guildId: message.guild.id,
-        prefix: configuration.prefix,
-    },
-    {
-         upsert: true,
+    if (!dbres) {
+        new GuildSchema({
+            guildId: message.guild.id,
+            prefix: PREFIX
+        }).catch(err => console.log(err));
     }
-    ).catch(err => console.log(err));
     
     const prefix = dbres.prefix;
 
